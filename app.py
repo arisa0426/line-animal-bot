@@ -45,3 +45,20 @@ def handle_image(event):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+@app.route("/callback", methods=['POST'])
+def callback():
+    signature = request.headers.get('X-Line-Signature')
+    body = request.get_data(as_text=True)
+
+    # 追加：ボディ確認（ログ用）
+    print("Request body:", body)
+
+    try:
+        handler.handle(body, signature)
+    except InvalidSignatureError:
+        print("❌ Signature Error")
+        abort(400)
+
+    return 'OK'
