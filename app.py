@@ -6,8 +6,13 @@ import os
 
 app = Flask(__name__)
 
+# 正しく環境変数名で取得
 LINE_CHANNEL_ACCESS_TOKEN = os.getenv('LINE_CHANNEL_ACCESS_TOKEN')
 LINE_CHANNEL_SECRET = os.getenv('LINE_CHANNEL_SECRET')
+
+# デバッグ用ログ出力（あとで消してOK）
+print("DEBUG TOKEN:", LINE_CHANNEL_ACCESS_TOKEN)
+print("DEBUG SECRET:", LINE_CHANNEL_SECRET)
 
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
