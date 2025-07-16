@@ -14,7 +14,7 @@ handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
 @app.route("/callback", methods=['POST'])
 def callback():
-    signature = request.headers['X-Line-Signature']
+    signature = request.headers.get('X-Line-Signature')
     body = request.get_data(as_text=True)
 
     try:
@@ -28,7 +28,7 @@ def handle_image(event):
     message_id = event.message.id
     message_content = line_bot_api.get_message_content(message_id)
 
-    os.makedirs("tmp", exist_ok=True)  # フォルダがなければ作る
+    os.makedirs("tmp", exist_ok=True)
     with open(f'tmp/{message_id}.jpg', 'wb') as fd:
         for chunk in message_content.iter_content():
             fd.write(chunk)
@@ -40,8 +40,3 @@ def handle_image(event):
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-import os
-
-LINE_CHANNEL_ACCESS_TOKEN = os.getenv('LINE_CHANNEL_ACCESS_TOKEN')
-LINE_CHANNEL_SECRET = os.getenv('LINE_CHANNEL_SECRET')
